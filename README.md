@@ -1,6 +1,6 @@
 # SSH Proxy
 
-This is a simple wrapper for creating a SOCKS5 compatible proxy to connect via an SSH tunnel.
+SSH Proxy is a simple wrapper written in Python for creating a SOCKS5 compatible proxy to connect via an SSH tunnel.
 
 SSH Proxy is useful for situations when you need to browse websites that are behind a corporate firewall, such as internal tools, test and staging servers etc.
 
