@@ -27,8 +27,8 @@ This will start SSH Proxy on localhost port 8080
 
 ## Contributions
 
-Pull Requests welcome for any improvements.
+Pull Requests welcome for any improvements or feel free to fork to tailor to your own needs.
 
 ## Author
 
-Adam Williams <https://github.com/adam-rw>
+Adam Williams - <https://github.com/adam-rw>
