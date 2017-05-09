@@ -24,7 +24,7 @@ Use with a browser proxy like [FoxyProxy](https://getfoxyproxy.org/) by setting 
 
 You will need to set the following in the config.ini file:
 
-* `Host=ssh_host_or_ip
+* `Host=ssh_host_or_ip`
 * `User=you_ssh_username`
 
 ### Other Options
