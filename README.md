@@ -20,10 +20,10 @@ This will start SSH Proxy on localhost port 8080
 
 ### Other Options
 
-`--stop` - Stop proxy service
-`--restart` - Restart proxy service
-`--status` - Get connection status
-`--help` - Get usage information
+* `--stop` - Stop proxy service
+* `--restart` - Restart proxy service
+* `--status` - Get connection status
+* `--help` - Get usage information
 
 ## Contributions
 
