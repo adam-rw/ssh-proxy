@@ -20,6 +20,13 @@ This will start SSH Proxy on localhost port 8080.
 
 Use with a browser proxy like [FoxyProxy](https://getfoxyproxy.org/) by setting the proxy host to `localhost`, port `8080` and type `Socks 5`.
 
+### Configuration
+
+You will need to set the following in the config.ini file:
+
+* `Host=ssh_host_or_ip
+* `User=you_ssh_username`
+
 ### Other Options
 
 * `--stop` - Stop proxy service
