@@ -18,10 +18,25 @@ else:
 	printer('No config.ini exists. Make sure you edit and rename config.ini.default')
 	exit(1)
 
-user = config.get('SSH Host', 'User')
-host = config.get('SSH Host', 'Host')
+try:
+	user = config.get('SSH Host', 'User')
+except configparser.NoOptionError:
+	printer('Error: SSH User undefined. Correct in config.ini and try again')
+	exit(1)
 
-ssh_command = 'ssh -C2qTnN -D 8080 -f %s@%s' % (user, host)
+try:
+	host = config.get('SSH Host', 'Host')
+except configparser.NoOptionError:
+	printer('Error: SSH Host undefined. Correct in config.ini and try again')
+	exit(1)
+
+try:
+	port = config.get('Proxy', 'Port')
+except configparser.NoOptionError:
+	printer('Error: Proxy port undefined. Correct in config.ini and try again')
+	exit(1)
+
+ssh_command = 'ssh -C2qTnN -D %s -o PreferredAuthentications=keyboard-interactive,password -o PubkeyAuthentication=no -f %s@%s' % (port, user, host)
 
 def run_command(arg):
 	if '--start' == arg:
@@ -40,7 +55,7 @@ def get_pids():
 	pids = []
 
 	for line in ps.splitlines():
-		if str(line).find(ssh_command) > 0:
+		if str(line).find('ssh -C2qTnN -D %s' % port) > 0:
 			line_split = str(line).split(' ')
 			pids.append(line_split[0][2:])
 
@@ -91,7 +106,6 @@ def status():
 	else:
 		printer('SSH Proxy is not connected')
 	pass
-
 
 try:
 	if len(sys.argv) == 2:
