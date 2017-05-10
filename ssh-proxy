@@ -61,6 +61,8 @@ def start():
 		except Exception as e:
 			print('Error: Unable to create tunnel. Try running the command manually for details:')
 			printer(ssh_command)
+
+		status()
 	else:
 		printer('SSH Proxy is already running')
 
