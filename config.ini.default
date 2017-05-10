@@ -1,3 +1,6 @@
 [SSH Host]
 Host=foo
 User=bar
+
+[Proxy]
+Port=8080
