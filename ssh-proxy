@@ -8,12 +8,19 @@ import time
 import signal
 import configparser
 
+def absolute_path(file):
+	 script = os.path.realpath(__file__)
+	 script_path_elements = script.split('/')
+	 script_path_elements = script_path_elements [:-1]
+	 script_path_elements.append(file)
+	 return '/'.join(script_path_elements)
+
 def printer(message):
 	print('%s' % message)
 
-if os.path.exists('config.ini'):
+if os.path.exists(absolute_path('config.ini')):
 	config = configparser.ConfigParser()
-	config.read('config.ini')
+	config.read(absolute_path('config.ini'))
 else:
 	printer('No config.ini exists. Make sure you edit and rename config.ini.default')
 	exit(1)

@@ -10,16 +10,17 @@ SSH Proxy is useful for situations when you need to browse websites that are beh
 * Run `pip install -r requirements.txt`
 * `chmod +x ./ssh-proxy`
 * Edit `config.ini.default` and rename to `config.ini`
+* Create a symlink into your system path so you can call ssh-proxy globally
 
 ## Usage
 
 ### Starting SSH Proxy
 
-`./ssh-proxy --start`
+`ssh-proxy --start`
 
-This will start SSH Proxy on localhost port 8080.
+This will start SSH Proxy on localhost at the port specified in the config.ini (default 8080).
 
-Use with a browser proxy like [FoxyProxy](https://getfoxyproxy.org/) by setting the proxy host to `localhost`, port `8080` and type `Socks 5`.
+Use with a browser proxy like [FoxyProxy](https://getfoxyproxy.org/) by setting the proxy host to `localhost`, port `8080 (or whatever defined in config.ini)` and type `Socks 5`.
 
 ### Configuration
 
