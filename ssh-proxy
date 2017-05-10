@@ -8,16 +8,20 @@ import time
 import signal
 import configparser
 
-config = configparser.ConfigParser()
-config.read('config.ini')
+def printer(message):
+	print('%s' % message)
+
+if os.path.exists('config.ini'):
+	config = configparser.ConfigParser()
+	config.read('config.ini')
+else:
+	printer('No config.ini exists. Make sure you edit and rename config.ini.default')
+	exit(1)
 
 user = config.get('SSH Host', 'User')
 host = config.get('SSH Host', 'Host')
 
 ssh_command = 'ssh -C2qTnN -D 8080 -f %s@%s' % (user, host)
-
-def printer(message):
-	print('%s' % message)
 
 def run_command(arg):
 	if '--start' == arg:

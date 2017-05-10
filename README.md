@@ -9,6 +9,7 @@ SSH Proxy is useful for situations when you need to browse websites that are beh
 * Clone this repo and cd into the directory
 * Run pip install -r requirements.txt
 * chmod +x ./ssh-proxy
+* Edit config.ini.default and rename to config.ini
 
 ## Usage
 
