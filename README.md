@@ -1,6 +1,6 @@
 # SSH Proxy
 
-SSH Proxy is a simple wrapper written in Python 3 for creating a SOCKS5 compatible proxy to connect via an SSH tunnel.
+SSH Proxy is a simple wrapper written in Python 3 for creating SOCKS5 compatible proxies that connect via SSH tunnels.
 
 SSH Proxy is useful for situations when you need to browse websites that are behind a corporate firewall, such as internal tools, test and staging servers etc.
 
@@ -18,16 +18,18 @@ SSH Proxy is useful for situations when you need to browse websites that are beh
 
 `ssh-proxy --start`
 
-This will start SSH Proxy on localhost at the port specified in the config.ini (default 8080).
+This will start one or more SSH proxies on localhost at the ports specified in the config.ini.
 
-Use with a browser proxy like [FoxyProxy](https://getfoxyproxy.org/) by setting the proxy host to `localhost`, port `8080 (or whatever defined in config.ini)` and type `Socks 5`.
+Use with a browser proxy like [FoxyProxy](https://getfoxyproxy.org/) by setting the proxy host to `localhost`, port `8080 (or whatever defined in config.ini)` and type `Socks 5`. You can have multiple proxies running at any time.
 
 ### Configuration
 
 You will need to set the following in the config.ini file:
 
+* [config_name] - this can be anything you want
 * `Host=ssh_host_or_ip`
 * `User=you_ssh_username`
+* `Port=8080` - this is the port that you will specify in your proxy settings
 
 ### Other Options
 
