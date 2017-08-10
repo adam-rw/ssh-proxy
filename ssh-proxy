@@ -19,31 +19,35 @@ def printer(message):
 	print('%s' % message)
 
 if os.path.exists(absolute_path('config.ini')):
-	config = configparser.ConfigParser()
-	config.read(absolute_path('config.ini'))
+	configs = configparser.ConfigParser()
+	configs.read(absolute_path('config.ini'))
 else:
 	printer('No config.ini exists. Make sure you edit and rename config.ini.default')
 	exit(1)
 
-try:
-	user = config.get('SSH Host', 'User')
-except configparser.NoOptionError:
-	printer('Error: SSH User undefined. Correct in config.ini and try again')
+num_configs = len(configs.sections())
+if num_configs == 0:
+	printer('No configs found')
 	exit(1)
 
-try:
-	host = config.get('SSH Host', 'Host')
-except configparser.NoOptionError:
-	printer('Error: SSH Host undefined. Correct in config.ini and try again')
-	exit(1)
+for config in configs.sections():
+	try:
+		user = configs.get(config, 'User')
+	except configparser.NoOptionError:
+		printer('Error: User undefined in \'%s\' config. Correct in config.ini and try again' % config)
+		exit(1)
 
-try:
-	port = config.get('Proxy', 'Port')
-except configparser.NoOptionError:
-	printer('Error: Proxy port undefined. Correct in config.ini and try again')
-	exit(1)
+	try:
+		host = configs.get(config, 'Host')
+	except configparser.NoOptionError:
+		printer('Error: Host undefined in \'%s\' config. Correct in config.ini and try again' % config)
+		exit(1)
 
-ssh_command = 'ssh -C2qTnN -D %s -o PreferredAuthentications=keyboard-interactive,password -o PubkeyAuthentication=no -f %s@%s' % (port, user, host)
+	try:
+		port = configs.get(config, 'Port')
+	except configparser.NoOptionError:
+		printer('Error: Proxy port undefined in \'%s\' config. Correct in config.ini and try again' % config)
+		exit(1)
 
 def run_command(arg):
 	if '--start' == arg:
@@ -62,7 +66,7 @@ def get_pids():
 	pids = []
 
 	for line in ps.splitlines():
-		if str(line).find('ssh -C2qTnN -D %s' % port) > 0:
+		if str(line).find('ssh -C2qTnN -D') > 0:
 			line_split = str(line).split(' ')
 			pids.append(line_split[0][2:])
 
@@ -74,23 +78,33 @@ def get_pids():
 def start():
 	if not (get_pids()):
 		printer('SSH Proxy starting...')
-		password = getpass.getpass(prompt='SSH password for %s: ' % user)
 		
-		try:
-			ssh_tunnel = pexpect.spawn (ssh_command % globals())
-			ssh_tunnel.expect ('password:')
-			time.sleep (0.1)
-			ssh_tunnel.sendline (password)
-			time.sleep (0.1)
-			ssh_tunnel.expect (pexpect.EOF)
+		for config in configs.sections():
+			user = configs.get(config, 'User')
+			host = configs.get(config, 'Host')
+			port = configs.get(config, 'Port')
 
-		except Exception as e:
-			print('Error: Unable to create tunnel. Try running the command manually for details:')
-			printer(ssh_command)
+			ssh_command = 'ssh -C2qTnN -D %s -o PreferredAuthentications=keyboard-interactive,password -o PubkeyAuthentication=no -f %s@%s' % (port, user, host)
 
-		status()
+			try:
+				printer('Connecting to %s...' % config)
+				ssh_tunnel = pexpect.spawn (ssh_command % globals())
+				ssh_tunnel.expect ('password:')
+				time.sleep (0.1)
+				password = getpass.getpass(prompt='SSH password for %s: ' % user)
+				printer('Connecting...')
+				ssh_tunnel.sendline (password)
+				time.sleep (0.1)
+				ssh_tunnel.expect (pexpect.EOF)
+				if(get_pids()):
+					printer('Connected to %s' % config)
+
+			except Exception as e:
+				print('Error: Unable to create tunnel. Try running the command manually for details:')
+				printer(ssh_command)
+			
 	else:
-		printer('SSH Proxy is already running')
+		printer('SSH Proxy is already connected')
 
 def stop():
 	printer('SSH Proxy stopping...')
@@ -109,7 +123,7 @@ def restart():
 
 def status():
 	if get_pids():
-		printer('SSH Proxy is currently connected, via %s' % host)
+		printer('SSH Proxy is currently connected')
 	else:
 		printer('SSH Proxy is not connected')
 	pass

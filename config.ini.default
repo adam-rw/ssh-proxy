@@ -1,6 +1,9 @@
-[SSH Host]
-Host=foo
-User=bar
-
-[Proxy]
+[host_entry]
+Host=hostname
+User=username
 Port=8080
+
+[host_entry_2]
+Host=hostname
+User=username
+Port=8081
